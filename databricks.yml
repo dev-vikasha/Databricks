@@ -1,0 +1,33 @@
+bundle:
+  name: my_project_bundle
+
+include:
+  - resources/jobs/*.yml
+  - resources/pipelines/*.yml
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default : true
+    workspace:
+      host: https://dbc-4340ee01-4bd2.cloud.databricks.com/
+      root_path: /Users/vikasmishra482@gmail.com/dev
+    presets:
+      name_prefix: "[dev ${workspace.current_user.short_name}]"
+      source_linked_deployment: false
+  prod:
+    mode: production
+    default: false
+    workspace:
+      host: https://dbc-4340ee01-4bd2.cloud.databricks.com/
+      root_path: /Users/vikasmishra482@gmail.com/prod
+    presets: 
+      name_prefix:  "[prod ]"
+
+
+resources:
+  schemas:
+      bronze_schema:
+        name: bronze_DAB
+        catalog_name: ${var.catalog}
