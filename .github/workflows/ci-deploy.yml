@@ -1,0 +1,47 @@
+name: Databricks Asset Bundle Deploy
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Validate, Summary and Deploy Bundle
+    runs-on: ubuntu-latest
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Decide Databricks bundle target
+        run: |
+          if [ "${GITHUB_REF}" = "refs/heads/main" ]; then
+            echo "BUNDLE_TARGET=prod" >> $GITHUB_ENV
+          else
+            echo "BUNDLE_TARGET=dev" >> $GITHUB_ENV
+          fi
+
+      - name: Validate Databricks bundle
+        run: |
+          databricks bundle validate -t $BUNDLE_TARGET
+
+      - name: Show Databricks bundle summary
+        run: |
+          databricks bundle summary -t $BUNDLE_TARGET
+
+      - name: Deploy Databricks bundle
+        run: |
+          databricks bundle deploy -t $BUNDLE_TARGET

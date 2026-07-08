@@ -1,0 +1,4 @@
+variables:
+  catalog:
+    description: "this is the name of target Catalog"
+    default: dev
