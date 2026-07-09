@@ -1,7 +1,7 @@
 resources:
   jobs:
     process_data_emp_by_dept_f1:
-      name: process_data_emp_by_dept
+      name: process_data_emp_by_dept_f1
       tasks:
         - task_key: multitasking_test
           spark_python_task:
