@@ -16,6 +16,7 @@ targets:
     presets:
       name_prefix: "[dev ${workspace.current_user.short_name}]"
       source_linked_deployment: false
+
   prod:
     mode: production
     default: false
@@ -24,7 +25,6 @@ targets:
       root_path: /Users/3ce251cf-f392-490a-adb0-3bd1c156ec2a/prod
     presets: 
       name_prefix:  "[prod ]"
-
 
 resources:
   schemas:
